@@ -20,7 +20,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker buildx build --platform linux/amd64 -t ghcr.io/${{ github.actor }}/fyp:latest --push .
+          docker buildx build --platform linux/amd64 -t ghcr.io/umarsidiki/fyp:latest --push .
 
       - name: Trigger Coolify Deploy
         run: |
