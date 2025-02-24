@@ -3,30 +3,25 @@ name: Build and Deploy to Coolify
 on:
   push:
     branches:
-      - main  # Triggers on push to the 'main' branch
+      - main # Triggers on push to 'main'
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+    runs-on: ubuntu-latest # Use latest Ubuntu runner
     steps:
-      # Checkout the repository code
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Set up Docker Buildx for multi-platform builds
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Log in to GitHub Container Registry (GHCR) using a PAT
       - name: Log in to GHCR
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u umarsidiki --password-stdin
 
-      # Build and push the Docker image to GHCR
       - name: Build and Push Docker Image
         run: |
           docker buildx build --platform linux/amd64 -t ghcr.io/umarsidiki/fyp:latest --push .
 
-      # Trigger Coolify deployment via webhook
       - name: Trigger Coolify Deploy
         run: |
           curl -X GET "${{ secrets.COOLIFY_WEBHOOK }}" \
