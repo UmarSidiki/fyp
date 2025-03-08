@@ -89,7 +89,7 @@ export const BaseTemplate = (props: {
               </Link>
 
               {/* Desktop Navigation - Hidden on mobile and tablet */}
-              <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+              <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8 mx-[190px]">
                 <>
                   <Link href="/" className="font-medium hover:text-primary">
                     HOME

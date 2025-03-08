@@ -5,6 +5,11 @@ import { Button } from '@/components/ui/button';
 import { ChevronDown, Menu, Moon, Sun, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+
+export const BaseTemplate = (props: {
+  signOut: React.ReactNode;
+}) => {
 
 export default function Header() {
   const [language, setLanguage] = useState('ENG');
@@ -129,24 +134,9 @@ export default function Header() {
             {isDropdownOpen && (
               <div className="absolute top-full right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10">
                 <div className="py-1">
-                  <button
-                    onClick={() => {
-                      setLanguage('ENG');
-                      setIsDropdownOpen(false);
-                    }}
-                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    ENG
-                  </button>
-                  <button
-                    onClick={() => {
-                      setLanguage('URD');
-                      setIsDropdownOpen(false);
-                    }}
-                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    URD
-                  </button>
+                 
+                <ul className="flex flex-col space-y-4">{props.rightNav}</ul>
+
                 </div>
               </div>
             )}
@@ -263,4 +253,5 @@ export default function Header() {
       )}
     </header>
   );
+}
 }

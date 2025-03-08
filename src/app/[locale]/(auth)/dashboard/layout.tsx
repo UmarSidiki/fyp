@@ -52,6 +52,11 @@ export default async function DashboardLayout(props: {
           </li>
         </>
       )}
+      signOut={(
+        <li>
+          <LocaleSwitcher />
+        </li>
+      )}
     >
       {props.children}
     </BaseTemplate>
