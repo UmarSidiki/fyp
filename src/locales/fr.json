@@ -8,8 +8,15 @@
     "sign_up_link": "S'inscrire"
   },
   "BaseTemplate": {
-    "description": "Code de démarrage pour Next.js avec Tailwind CSS",
-    "made_with": "Fait avec <author></author>."
+    "description": "A template for your application",
+    "made_with": "Made with ❤️ by {author}",
+    "home": "HOME",
+    "blog": "BLOG",
+    "social": "SOCIAL",
+    "guide": "GUIDE",
+    "ai": "AI",
+    "profile": "Profile",
+    "sign_out": "Sign out"
   },
   "Index": {
     "meta_title": "Présentation de Next.js Boilerplate",
