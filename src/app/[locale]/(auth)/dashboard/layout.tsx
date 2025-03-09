@@ -41,18 +41,15 @@ export default async function DashboardLayout(props: {
         <>
           <li>
             <SignOutButton>
-              <button className="border-none text-gray-700 hover:text-gray-900" type="button">
+              <button className="font-medium hover:text-primary border-none outline-none text-gray-700 hover:text-gray-900" type="button">
                 {t('sign_out')}
               </button>
             </SignOutButton>
           </li>
 
-          <li>
-            <LocaleSwitcher />
-          </li>
         </>
       )}
-      signOut={(
+      local={(
         <li>
           <LocaleSwitcher />
         </li>

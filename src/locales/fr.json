@@ -10,13 +10,13 @@
   "BaseTemplate": {
     "description": "A template for your application",
     "made_with": "Made with ❤️ by {author}",
-    "home": "HOME",
+    "home": "ACCUEIL",
     "blog": "BLOG",
     "social": "SOCIAL",
     "guide": "GUIDE",
-    "ai": "AI",
-    "profile": "Profile",
-    "sign_out": "Sign out"
+    "ai": "IA",
+    "profile": "Profil",
+    "sign_out": "Se déconnecter"
   },
   "Index": {
     "meta_title": "Présentation de Next.js Boilerplate",

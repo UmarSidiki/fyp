@@ -1,7 +1,7 @@
 // src/templates/BaseTemplate.tsx
 'use client';
 
-import { ChevronDown, Menu, Moon, Sun, User, X } from 'lucide-react';
+import { Menu, Moon, Sun, User, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import Link from 'next/link';
@@ -11,9 +11,11 @@ export const BaseTemplate = (props: {
   leftNav: React.ReactNode;
   rightNav?: React.ReactNode;
   children: React.ReactNode;
+  local: React.ReactNode;
+
 }) => {
   const t = useTranslations('BaseTemplate');
-  const [language, setLanguage] = useState('ENG');
+  // const [language, setLanguage] = useState('ENG');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -85,7 +87,7 @@ export const BaseTemplate = (props: {
             {/* Logo */}
             <div className="flex items-center">
               <Link href="/" className="mr-4 sm:mr-8">
-                <h1 className="text-xl sm:text-2xl font-serif italic font-bold">The Travelers</h1>
+                <h1 className="text-xl sm:text-3xl font-serif italic font-bold">The Travelers</h1>
               </Link>
 
               {/* Desktop Navigation - Hidden on mobile and tablet */}
@@ -112,27 +114,27 @@ export const BaseTemplate = (props: {
             </div>
 
             {/* Right Side Actions - Both Mobile and Desktop */}
-            <div className="flex items-center space-x-3 sm:space-x-4">
+            <div className="flex items-center space-x-1 sm:space-x-2">
               {/* Profile Icon with Dropdown */}
               <div className="relative" ref={profileDropdownRef}>
                 <button
                   type="button"
-                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center"
+                  className="p-2 mx-[-10px] rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center"
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsProfileDropdownOpen(!isProfileDropdownOpen);
                   }}
                   aria-label="Profile menu"
                 >
-                  <User size={24} className="text-gray-700 dark:text-gray-200" />
+                  <User size={26} className="text-gray-700 dark:text-gray-200" />
                 </button>
 
                 {isProfileDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10 w-48">
-                    <div className="py-1">
+                  <div className="absolute top-full right-2 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10 w-48">
+                    <div className="py-0.5 px-2">
                       <Link
                         href={`/${locale}/dashboard/user-profile`}
-                        className="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="flex items-center px- py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                         onClick={() => setIsProfileDropdownOpen(false)}
                       >
                         <User size={16} className="mr-2" />
@@ -155,53 +157,11 @@ export const BaseTemplate = (props: {
               </button>
 
               {/* Language Selector - Desktop Only */}
-              <div className="relative hidden lg:block" ref={dropdownRef}>
-                {props.rightNav
-                  ? (
-                      <ul className="flex flex-wrap gap-x-5 text-xl">{props.rightNav}</ul>
-                    )
-                  : (
-                      <>
-                        <button
-                          type="button"
-                          className="flex items-center space-x-1 border border-green-400 rounded px-2 py-1"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setIsDropdownOpen(!isDropdownOpen);
-                          }}
-                        >
-                          <span className="text-sm font-medium">{language}</span>
-                          <ChevronDown size={16} />
-                        </button>
-
-                        {isDropdownOpen && (
-                          <div className="absolute top-full right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10">
-                            <div className="py-1">
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setLanguage('ENG');
-                                  setIsDropdownOpen(false);
-                                }}
-                                className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                              >
-                                ENG
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setLanguage('URD');
-                                  setIsDropdownOpen(false);
-                                }}
-                                className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                              >
-                                URD
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </>
-                    )}
+              <div className="relative hidden lg:block  " ref={dropdownRef}>
+                <div className="flex justify-between gap-2">
+                  <ul className="flex flex-wrap gap-x-5 text-xl cursor-pointer">{props.rightNav}</ul>
+                  <ul className="flex flex-wrap gap-x-5 text-xl items-center space-x-1 border border-green-400 rounded px-2 py-0">{props.local}</ul>
+                </div>
               </div>
 
               {/* Mobile Menu Button - On the right */}
@@ -242,7 +202,7 @@ export const BaseTemplate = (props: {
               <nav className="flex flex-col space-y-4 p-4">
 
                 <>
-                  <Link href="/" className="font-medium hover:text-primary px-2" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link href="/home" className="font-medium hover:text-primary px-2" onClick={() => setIsMobileMenuOpen(false)}>
                     HOME
                   </Link>
                   <Link

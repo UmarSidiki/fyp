@@ -2,17 +2,13 @@
 'use client';
 /* eslint-disable react-dom/no-missing-button-type */
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Menu, Moon, Sun, X } from 'lucide-react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
-
-export const BaseTemplate = (props: {
-  signOut: React.ReactNode;
-}) => {
+import { LocaleSwitcher } from './LocaleSwitcher';
 
 export default function Header() {
-  const [language, setLanguage] = useState('ENG');
+  // const [language, setLanguage] = useState('ENG');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -119,27 +115,10 @@ export default function Header() {
           </button>
 
           {/* Language Selector - Desktop Only */}
-          <div className="relative hidden lg:block" ref={dropdownRef}>
-            <button
-              className="flex items-center space-x-1 border border-green-400 rounded px-2 py-1"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsDropdownOpen(!isDropdownOpen);
-              }}
-            >
-              <span className="text-sm font-medium">{language}</span>
-              <ChevronDown size={16} />
-            </button>
+          <div className="relative hidden lg:block  items-center space-x-1 border border-green-400 rounded px-2 py-1" ref={dropdownRef}>
 
-            {isDropdownOpen && (
-              <div className="absolute top-full right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10">
-                <div className="py-1">
-                 
-                <ul className="flex flex-col space-y-4">{props.rightNav}</ul>
+            <LocaleSwitcher></LocaleSwitcher>
 
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Mobile Menu Button - On the right */}
@@ -207,42 +186,8 @@ export default function Header() {
 
           <div className="flex flex-col space-y-4 p-4 mt-4 border-t border-gray-200 dark:border-gray-700">
             {/* Language Selector in Mobile Menu */}
-            <div className="relative">
-              <button
-                className="flex items-center space-x-1 border border-green-400 rounded px-2 py-1 w-full"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsDropdownOpen(!isDropdownOpen);
-                }}
-              >
-                <span className="text-sm font-medium">{language}</span>
-                <ChevronDown size={16} className="ml-auto" />
-              </button>
-
-              {isDropdownOpen && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10">
-                  <div className="py-1">
-                    <button
-                      onClick={() => {
-                        setLanguage('ENG');
-                        setIsDropdownOpen(false);
-                      }}
-                      className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      ENG
-                    </button>
-                    <button
-                      onClick={() => {
-                        setLanguage('URD');
-                        setIsDropdownOpen(false);
-                      }}
-                      className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      URD
-                    </button>
-                  </div>
-                </div>
-              )}
+            <div className="relative flex items-center space-x-1 border border-green-400 rounded px-2 py-1 w-full">
+              <LocaleSwitcher></LocaleSwitcher>
             </div>
           </div>
         </div>
@@ -253,5 +198,4 @@ export default function Header() {
       )}
     </header>
   );
-}
 }
