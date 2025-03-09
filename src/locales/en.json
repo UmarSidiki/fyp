@@ -7,7 +7,6 @@
     "sign_in_link": "Sign in",
     "sign_up_link": "Sign up"
   },
-
   "Index": {
     "meta_title": "Next.js Boilerplate Presentation",
     "meta_description": "Next js Boilerplate is the perfect starter code for your project. Build your React application with the Next.js framework.",
@@ -66,10 +65,9 @@
   },
   "DashboardLayout": {
     "dashboard_link": "Dashboard",
-    "user_profile_link": "",
+    "user_profile_link": "Manage your account",
     "sign_out": "Sign out"
   },
-
   "BaseTemplate": {
     "description": "A template for your application",
     "made_with": "Made with ❤️ by {author}",

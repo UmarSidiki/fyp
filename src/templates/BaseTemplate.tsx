@@ -11,7 +11,7 @@ export const BaseTemplate = (props: {
   leftNav: React.ReactNode;
   rightNav?: React.ReactNode;
   children: React.ReactNode;
-  local: React.ReactNode;
+  local?: React.ReactNode;
 
 }) => {
   const t = useTranslations('BaseTemplate');
