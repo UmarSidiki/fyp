@@ -1,8 +1,11 @@
+import { MapHero } from '@/components/MapHero/MapHero';
 import React from 'react';
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div>
+      <MapHero />
+    </div>
   );
 };
 
