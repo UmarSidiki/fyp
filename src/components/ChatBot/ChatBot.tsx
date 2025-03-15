@@ -1,3 +1,5 @@
+/* eslint-disable react-web-api/no-leaked-timeout */
+/* eslint-disable react-dom/no-missing-button-type */
 'use client';
 
 import type React from 'react';
@@ -84,6 +86,7 @@ export function ChatBot({ onClose }: ChatBotProps) {
     }
 
     // Trigger bot response
+    // eslint-disable-next-line ts/no-use-before-define
     simulateBotResponse('Thanks for sharing the file. How can I help you with this?');
   };
 
@@ -173,15 +176,15 @@ export function ChatBot({ onClose }: ChatBotProps) {
       transition={{ duration: 0.3 }}
       className="absolute bottom-20 right-0 w-80 bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-emerald-100"
     >
-      <div className="travel-gradient text-black p-4 flex justify-between items-center">
+      <div className="travel-gradient text-white p-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+          <div className="w-2 h-2 rounded-full bg-green-200 animate-pulse"></div>
           <div className="flex items-center">
             <MessageSquare className="h-4 w-4 mr-2" />
             <span className="font-medium">Travel Assistant</span>
           </div>
         </div>
-        <Button variant="ghost" size="icon" onClick={onClose} className="text-black hover:bg-white/20 rounded-full">
+        <Button variant="ghost" size="icon" onClick={onClose} className="text-white hover:bg-white/20 rounded-full">
           <X className="h-4 w-4" />
         </Button>
       </div>
@@ -199,8 +202,8 @@ export function ChatBot({ onClose }: ChatBotProps) {
               >
                 <div className={`flex gap-2 max-w-[80%] ${message.isBot ? 'flex-row' : 'flex-row-reverse'}`}>
                   {message.isBot && (
-                    <Avatar className="h-8 w-8 bg-emerald-100 border-2 border-emerald-200">
-                      <span className="text-xs">🤖</span>
+                    <Avatar className="h-8 w-8 bg-emerald-100 border-2 border-emerald-200 flex justify-center items-center ">
+                      <span className="text-xs  ">🤖</span>
                     </Avatar>
                   )}
                   <div>
@@ -208,7 +211,7 @@ export function ChatBot({ onClose }: ChatBotProps) {
                       className={`p-3 rounded-2xl ${
                         message.isBot
                           ? 'bg-white border border-gray-200 shadow-sm rounded-tl-none'
-                          : 'travel-gradient text-gray-600 rounded-tr-none'
+                          : 'travel-gradient text-gray-100 rounded-tr-none'
                       }`}
                     >
                       {message.text}
@@ -287,14 +290,14 @@ export function ChatBot({ onClose }: ChatBotProps) {
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type your message..."
-            className="flex-1 rounded-full border-gray-200 focus-visible:ring-emerald-500"
+            className="flex-1 rounded-full border-gray-200 focus-visible:ring-emerald-300"
           />
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
                 size="icon"
-                className="text-emerald-600 border-emerald-200 hover:bg-emerald-50 rounded-full"
+                className="text-emerald-300 border-emerald-200 hover:bg-emerald-50 rounded-full"
               >
                 <Smile className="h-4 w-4" />
               </Button>
@@ -338,7 +341,7 @@ export function ChatBot({ onClose }: ChatBotProps) {
               </div>
             </PopoverContent>
           </Popover>
-          <Button onClick={handleSendMessage} size="icon" className="travel-gradient hover:opacity-90 rounded-full">
+          <Button onClick={handleSendMessage} size="icon" className="travel-gradient hover:opacity-90 rounded-full ">
             <Send className="h-4 w-4" />
           </Button>
         </div>
