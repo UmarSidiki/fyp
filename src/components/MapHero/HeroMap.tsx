@@ -1,8 +1,7 @@
-/* eslint-disable react-dom/no-missing-button-type */
+/* eslint-disable ts/consistent-type-definitions */
 'use client';
 
 import type React from 'react';
-
 import { ChatBot } from '@/components/ChatBot/ChatBot';
 import { GoogleMap } from '@/components/GoogleMap/GoogleMap';
 import { SearchResults } from '@/components/SearchResults/SearchResults';
@@ -13,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Calendar, DollarSign, MapPin, Minus, Navigation, Plane, Plus, Search, X } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 declare global {
   interface Window {
@@ -28,19 +27,10 @@ export function MapHero() {
   const [searchQuery, setSearchQuery] = useState('');
   const [location, setLocation] = useState('');
   const [budget, setBudget] = useState('');
-  const [center, setCenter] = useState({ lat: 30.3753, lng: 69.3451 }); // Pakistan center
-  const [zoom, setZoom] = useState(6);
+  const [center] = useState({ lat: 30.3753, lng: 69.3451 });
+  const [zoom] = useState(6);
   const mapRef = useRef<google.maps.Map | null>(null);
   const [searchError, setSearchError] = useState<string | null>(null);
-  // const [isLoaded, setIsLoaded] = useState(false);
-
-  // Set isLoaded to true after initial render
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleSearch = () => {
     // Reset any previous error
@@ -74,8 +64,8 @@ export function MapHero() {
   const handleMapSearch = () => {
     if (searchQuery && mapRef.current && window.google) {
       const geocoder = new window.google.maps.Geocoder();
-      geocoder.geocode({ address: searchQuery }, (results: { geometry: { location: any } }[], status: string) => {
-        if (status === 'OK' && results && results[0]) {
+      geocoder.geocode({ address: searchQuery }, (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
+        if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
           const location = results[0].geometry.location;
           mapRef.current?.setCenter(location);
           mapRef.current?.setZoom(10);
@@ -251,7 +241,7 @@ export function MapHero() {
                 <X className="h-5 w-5 mr-2" />
                 <span className="block sm:inline">{searchError}</span>
               </div>
-              <button className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setSearchError(null)}>
+              <button className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setSearchError(null)} type="button">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -312,7 +302,7 @@ export function MapHero() {
                 </div>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <button className="w-full text-left border-0 p-0 h-auto focus-visible:ring-0 text-base">
+                    <button className="w-full text-left border-0 p-0 h-auto focus-visible:ring-0 text-base" type="button">
                       {date ? format(date, 'PPP') : 'Select date'}
                     </button>
                   </PopoverTrigger>

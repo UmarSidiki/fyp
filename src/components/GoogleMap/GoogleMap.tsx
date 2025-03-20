@@ -1,286 +1,122 @@
 'use client';
 
 import { Loader } from '@googlemaps/js-api-loader';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+type LatLng = { lat: number; lng: number };
 
 type GoogleMapProps = {
-  center: { lat: number; lng: number };
+  center: LatLng;
   zoom: number;
+  start?: string | LatLng;
+  end?: string | LatLng;
+  onRouteCalculated?: (distance: string, time: string) => void;
   onLoad?: (map: google.maps.Map) => void;
 };
 
-export function GoogleMap({ center, zoom, onLoad }: GoogleMapProps) {
+export function GoogleMap({ center, zoom, start, end, onRouteCalculated, onLoad }: GoogleMapProps) {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const directionsRendererRef = useRef<google.maps.DirectionsRenderer | null>(null);
 
+  // Initialize the map with Pakistan restriction
   useEffect(() => {
-    // Create a global variable to track if the API is already loading or loaded
-    if (!(window as any).googleMapsInitialized) {
-      ;(window as any).googleMapsInitialized = true;
+    const initMap = async () => {
+      try {
+        setLoading(true);
+        const loader = new Loader({
+          apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+          version: 'weekly',
+          libraries: ['places'],
+        });
+        const google = await loader.load();
 
-      const initMap = async () => {
-        try {
-          setLoading(true);
+        // Define Pakistan's geographical bounds
+        const pakistanBounds = new google.maps.LatLngBounds(
+          new google.maps.LatLng(23.69, 60.87),
+          new google.maps.LatLng(37.09, 77.84),
+        );
 
-          // Initialize the Google Maps loader
-          const loader = new Loader({
-            apiKey: '', // In a real app, you would use your API key here
-            version: 'weekly',
-            libraries: ['places'],
-          });
+        const mapInstance = new google.maps.Map(document.getElementById('google-map') as HTMLElement, {
+          center,
+          zoom,
+          restriction: {
+            latLngBounds: pakistanBounds,
+            strictBounds: false,
+          },
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false,
+          zoomControl: false,
+          disableDefaultUI: true,
+          scaleControl: false,
+          rotateControl: false,
+          panControl: false,
+          styles: [
+            {
+              featureType: 'administrative.country',
+              elementType: 'geometry.stroke',
+              stylers: [{ color: '#4a8594' }],
+            },
+            // Add more styles as needed
+          ],
+        });
 
-          // Load the Google Maps API
-          const google = await loader.load();
+        // Initialize DirectionsRenderer
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(mapInstance);
+        directionsRendererRef.current = directionsRenderer;
 
-          // Create a new map instance
-          const mapInstance = new google.maps.Map(document.getElementById('google-map') as HTMLElement, {
-            center,
-            zoom,
-            mapTypeControl: true,
-            streetViewControl: true,
-            fullscreenControl: true,
-            zoomControl: false, // We'll use our custom zoom controls
-            styles: [
-              {
-                featureType: 'administrative.country',
-                elementType: 'geometry.stroke',
-                stylers: [{ color: '#4a8594' }],
-              },
-              {
-                featureType: 'administrative.province',
-                elementType: 'geometry.stroke',
-                stylers: [{ color: '#4a8594' }, { visibility: 'on' }, { weight: 1.5 }],
-              },
-              {
-                featureType: 'landscape',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#f5f5f5' }],
-              },
-              {
-                featureType: 'landscape.natural',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#e8f7ed' }],
-              },
-              {
-                featureType: 'landscape.natural.landcover',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#d4e8c1' }],
-              },
-              {
-                featureType: 'landscape.natural.terrain',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#d4e8c1' }],
-              },
-              {
-                featureType: 'poi',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#c5e8b3' }],
-              },
-              {
-                featureType: 'poi.attraction',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#d4e8c1' }],
-              },
-              {
-                featureType: 'poi.business',
-                stylers: [{ visibility: 'off' }],
-              },
-              {
-                featureType: 'poi.government',
-                stylers: [{ visibility: 'off' }],
-              },
-              {
-                featureType: 'poi.medical',
-                stylers: [{ visibility: 'off' }],
-              },
-              {
-                featureType: 'poi.park',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#c5e8b3' }, { visibility: 'on' }],
-              },
-              {
-                featureType: 'poi.place_of_worship',
-                stylers: [{ visibility: 'off' }],
-              },
-              {
-                featureType: 'poi.school',
-                stylers: [{ visibility: 'off' }],
-              },
-              {
-                featureType: 'poi.sports_complex',
-                stylers: [{ visibility: 'off' }],
-              },
-              {
-                featureType: 'road',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#ffffff' }],
-              },
-              {
-                featureType: 'road',
-                elementType: 'geometry.stroke',
-                stylers: [{ color: '#e9e9e9' }],
-              },
-              {
-                featureType: 'water',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#b1dcfa' }],
-              },
-            ],
-          });
-
-          // Add a default marker for Pakistan
-          new google.maps.Marker({
-            position: { lat: 30.3753, lng: 69.3451 },
-            map: mapInstance,
-            title: 'Pakistan',
-            animation: google.maps.Animation.DROP,
-          });
-
-          setMap(mapInstance);
-          if (onLoad) {
-            onLoad(mapInstance);
-          }
-          setLoading(false);
-        } catch (err) {
-          console.error('Error loading Google Maps:', err);
-          setError('Failed to load Google Maps. Please try again later.');
-          setLoading(false);
+        setMap(mapInstance);
+        if (onLoad) {
+          onLoad(mapInstance);
         }
-      };
+        setLoading(false);
+      } catch (err) {
+        console.error('Error loading Google Maps:', err);
+        setError('Failed to load the map. Please try again later.');
+        setLoading(false);
+      }
+    };
 
-      initMap();
-    } else {
-      // If the API is already loading or loaded, just wait for it
-      const checkIfGoogleIsReady = setInterval(() => {
-        if (window.google && window.google.maps) {
-          clearInterval(checkIfGoogleIsReady);
-
-          try {
-            // Create a new map instance
-            const mapInstance = new window.google.maps.Map(document.getElementById('google-map') as HTMLElement, {
-              center,
-              zoom,
-              mapTypeControl: true,
-              streetViewControl: true,
-              fullscreenControl: true,
-              zoomControl: false, // We'll use our custom zoom controls
-              styles: [
-                {
-                  featureType: 'administrative.country',
-                  elementType: 'geometry.stroke',
-                  stylers: [{ color: '#4a8594' }],
-                },
-                {
-                  featureType: 'administrative.province',
-                  elementType: 'geometry.stroke',
-                  stylers: [{ color: '#4a8594' }, { visibility: 'on' }, { weight: 1.5 }],
-                },
-                {
-                  featureType: 'landscape',
-                  elementType: 'geometry.fill',
-                  stylers: [{ color: '#f5f5f5' }],
-                },
-                {
-                  featureType: 'landscape.natural',
-                  elementType: 'geometry.fill',
-                  stylers: [{ color: '#e8f7ed' }],
-                },
-                {
-                  featureType: 'landscape.natural.landcover',
-                  elementType: 'geometry.fill',
-                  stylers: [{ color: '#d4e8c1' }],
-                },
-                {
-                  featureType: 'landscape.natural.terrain',
-                  elementType: 'geometry.fill',
-                  stylers: [{ color: '#d4e8c1' }],
-                },
-                {
-                  featureType: 'poi',
-                  elementType: 'geometry.fill',
-                  stylers: [{ color: '#c5e8b3' }],
-                },
-                {
-                  featureType: 'poi.attraction',
-                  elementType: 'geometry.fill',
-                  stylers: [{ color: '#d4e8c1' }],
-                },
-                {
-                  featureType: 'poi.business',
-                  stylers: [{ visibility: 'off' }],
-                },
-                {
-                  featureType: 'poi.government',
-                  stylers: [{ visibility: 'off' }],
-                },
-                {
-                  featureType: 'poi.medical',
-                  stylers: [{ visibility: 'off' }],
-                },
-                {
-                  featureType: 'poi.park',
-                  elementType: 'geometry.fill',
-                  stylers: [{ color: '#c5e8b3' }, { visibility: 'on' }],
-                },
-                {
-                  featureType: 'poi.place_of_worship',
-                  stylers: [{ visibility: 'off' }],
-                },
-                {
-                  featureType: 'poi.school',
-                  stylers: [{ visibility: 'off' }],
-                },
-                {
-                  featureType: 'poi.sports_complex',
-                  stylers: [{ visibility: 'off' }],
-                },
-                {
-                  featureType: 'road',
-                  elementType: 'geometry.fill',
-                  stylers: [{ color: '#ffffff' }],
-                },
-                {
-                  featureType: 'road',
-                  elementType: 'geometry.stroke',
-                  stylers: [{ color: '#e9e9e9' }],
-                },
-                {
-                  featureType: 'water',
-                  elementType: 'geometry.fill',
-                  stylers: [{ color: '#b1dcfa' }],
-                },
-              ],
-            });
-
-            // Add a default marker for Pakistan
-            new window.google.maps.Marker({
-              position: { lat: 30.3753, lng: 69.3451 },
-              map: mapInstance,
-              title: 'Pakistan',
-              animation: window.google.maps.Animation.DROP,
-            });
-
-            setMap(mapInstance);
-            if (onLoad) {
-              onLoad(mapInstance);
-            }
-            setLoading(false);
-          } catch (err) {
-            console.error('Error initializing Google Maps:', err);
-            setError('Failed to initialize Google Maps. Please try again later.');
-            setLoading(false);
-          }
-        }
-      }, 100);
-
-      // Clean up interval if component unmounts
-      return () => clearInterval(checkIfGoogleIsReady);
-    }
+    initMap();
   }, [center, zoom, onLoad]);
 
+  // Calculate and display route when start and end are provided
+  useEffect(() => {
+    if (map && directionsRendererRef.current) {
+      if (start && end) {
+        const directionsService = new google.maps.DirectionsService();
+        const request = {
+          origin: typeof start === 'string' ? start : new google.maps.LatLng(start.lat, start.lng),
+          destination: typeof end === 'string' ? end : new google.maps.LatLng(end.lat, end.lng),
+          travelMode: google.maps.TravelMode.DRIVING, // Default to driving; can be made configurable
+        };
+
+        directionsService.route(request, (result, status) => {
+          if (status === google.maps.DirectionsStatus.OK && directionsRendererRef.current) {
+            directionsRendererRef.current.setDirections(result);
+            const route = result?.routes[0]?.legs[0];
+            const distance = route?.distance?.text || 'Unknown';
+            const time = route?.duration?.text || 'Unknown';
+            if (onRouteCalculated) {
+              onRouteCalculated(distance, time);
+            }
+          } else {
+            console.error('Directions request failed:', status);
+            // Optionally display an error to the user
+          }
+        });
+      } else {
+        // Clear the route if start or end is missing
+        directionsRendererRef.current.setDirections(null);
+      }
+    }
+  }, [map, start, end, onRouteCalculated]);
+
   return (
-    <div className="w-full h-full ">
+    <div className="w-full h-full relative">
       <div id="google-map" className="w-full h-full"></div>
 
       {loading && (
@@ -297,14 +133,13 @@ export function GoogleMap({ center, zoom, onLoad }: GoogleMapProps) {
           <div className="bg-white p-6 rounded-xl shadow-xl max-w-md">
             <h3 className="text-lg font-semibold text-red-600 mb-2">Map Error</h3>
             <p className="text-gray-700 mb-4">{error}</p>
-            <div className="mt-4">
-              <button
-                onClick={() => window.location.reload()}
-                className="travel-gradient text-white rounded-full px-4 py-2 font-medium"
-              >
-                Retry Loading Map
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="travel-gradient text-white rounded-full px-4 py-2 font-medium"
+            >
+              Retry Loading Map
+            </button>
           </div>
         </div>
       )}

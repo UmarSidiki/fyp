@@ -1,4 +1,4 @@
-import { MapHero } from '@/components/MapHero/MapHero';
+import { MapHero } from '@/components/MapHero/HeroMap';
 import React from 'react';
 
 const Home = () => {
