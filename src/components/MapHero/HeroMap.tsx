@@ -1,4 +1,3 @@
-/* eslint-disable ts/consistent-type-definitions */
 'use client';
 
 import type React from 'react';
@@ -15,8 +14,15 @@ import { Calendar, DollarSign, MapPin, Minus, Navigation, Plane, Plus, Search, X
 import { useCallback, useRef, useState } from 'react';
 
 declare global {
+  // eslint-disable-next-line ts/consistent-type-definitions
   interface Window {
-    google: any;
+    google: {
+      maps: {
+        Marker: any;
+        Animation: any;
+        SymbolPath: any;
+      };
+    };
   }
 }
 
