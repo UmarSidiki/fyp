@@ -170,3 +170,6 @@
 .travel-gradient-secondary {
   background: linear-gradient(135deg, hsl(var(--travel-secondary)), hsl(43, 96%, 68%));
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

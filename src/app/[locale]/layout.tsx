@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { DemoBadge } from '@/components/DemoBadge';
+import Header from '@/components/Header/Header';
 import arcjet, { detectBot, request } from '@/libs/Arcjet';
 import { Env } from '@/libs/Env';
 import { routing } from '@/libs/i18nNavigation';
@@ -92,6 +93,7 @@ export default async function RootLayout(props: {
           locale={locale}
           messages={messages}
         >
+          <Header></Header>
           {props.children}
 
           <DemoBadge />

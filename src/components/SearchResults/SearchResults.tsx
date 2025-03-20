@@ -114,13 +114,13 @@ export function SearchResults({ onClose, location, date, budget }: SearchResults
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="rounded-full  hover:bg-gray-100 absolute top-4 left-4 mt-[-50px]"
+            className="rounded-full  hover:bg-gray-100 absolute top-4 left-4 "
           >
             <ArrowLeft className="h-5 w-5 sm:h-4 sm:w-4" />
           </Button>
 
-          <div className="text-center rounded-full">
-            <h2 className="text-2xl sm:text-xl font-bold travel-gradient-text">Travel Experiences</h2>
+          <div className="text-center rounded-full flex-1">
+            <h2 className="text-5xlxl sm:text-xl font-bold travel-gradient-text ">Travel Experiences</h2>
             <div className="flex items-center justify-center gap-4 sm:gap-2 mt-2 text-sm sm:text-xs text-gray-500">
               {location && (
                 <div className="flex items-center">
@@ -185,7 +185,7 @@ export function SearchResults({ onClose, location, date, budget }: SearchResults
           </div>
         </motion.div>
 
-        <ScrollArea className="flex-1 overflow-auto">
+        <ScrollArea className="flex-1  overflow-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-4">
             {filteredResults.map((result, index) => (
               <motion.div

@@ -250,7 +250,7 @@ export function ChatBot({ onClose }: ChatBotProps) {
           {isTyping && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
               <div className="flex gap-2 max-w-[80%]">
-                <Avatar className="h-8 w-8 bg-emerald-100 border-2 border-emerald-200">
+                <Avatar className="h-8 w-8 bg-emerald-100 border-2 border-emerald-200 flex justify-center items-center">
                   <span className="text-xs">🤖</span>
                 </Avatar>
                 <div className="p-3 bg-white border border-gray-200 shadow-sm rounded-2xl rounded-tl-none">

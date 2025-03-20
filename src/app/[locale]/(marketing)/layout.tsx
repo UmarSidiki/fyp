@@ -1,12 +1,14 @@
-import Header from '@/components/Header';
+// import Header from '@/components/Header';
 import React from 'react';
 import Home from './page';
 
 const Layout = () => {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <Home />
+
+      {/* <MapHero /> */}
     </div>
   );
 };

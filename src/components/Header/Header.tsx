@@ -1,11 +1,10 @@
-// @ts-nocheck
 'use client';
 /* eslint-disable react-dom/no-missing-button-type */
+import { LocaleSwitcher } from '@/components/LocaleSwitcher'; // Adjust the import path as necessary
 import { Button } from '@/components/ui/button';
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { LocaleSwitcher } from './LocaleSwitcher';
 
 export default function Header() {
   // const [language, setLanguage] = useState('ENG');

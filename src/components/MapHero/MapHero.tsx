@@ -135,7 +135,7 @@ export function MapHero() {
   };
 
   return (
-    <div className="relative w-full h-[calc(100vh-100px)] overflow-auto flex justify-center items-center">
+    <div className="relative no-scrollbar w-full h-[calc(100vh-100px)] overflow-auto flex justify-center items-center">
       {/* Background pattern with gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-teal-50 to-emerald-50 z-0">
         <div className="absolute inset-0 bg-[url('/placeholder.svg?height=20&width=20')] bg-repeat opacity-20"></div>
@@ -237,7 +237,6 @@ export function MapHero() {
             <Navigation className="h-4 w-4 text-emerald-700" />
           </Button>
         </motion.div>
-
         {/* Error notification */}
         {searchError && (
           <motion.div
@@ -263,7 +262,7 @@ export function MapHero() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className=" z-20 glass-card p-5 border rounded-4xl shadow-xl w-[90%] mx-[50px] my-[-90px] "
+          className=" z-20 glass-card p-4 border rounded-4xl shadow-xl w-[90%] mx-[50px] my-[-80px] "
         >
           <div className=" flex flex-col justify-center w-full ">
             <div className="flex items-center gap-2 mb-4">

@@ -96,7 +96,7 @@ export const BaseTemplate = (props: {
                   <Link href="/" className="font-medium hover:text-primary">
                     HOME
                   </Link>
-                  <Link href="/blog" className="font-medium hover:text-primary">
+                  <Link href="/Blog" className="font-medium hover:text-primary">
                     BLOG
                   </Link>
                   <Link href="/social" className="font-medium hover:text-primary">
