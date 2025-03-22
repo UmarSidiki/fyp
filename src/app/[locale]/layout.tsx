@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
-import { DemoBadge } from '@/components/DemoBadge';
+// <<<<<<< HEAD
+// import { DemoBadge } from '@/components/DemoBadge';
 import Header from '@/components/Header/Header';
+// =======
+// >>>>>>> 7b2d625e50b23a412d1048a795220ac9169c1c8c
 import arcjet, { detectBot, request } from '@/libs/Arcjet';
 import { Env } from '@/libs/Env';
 import { routing } from '@/libs/i18nNavigation';
@@ -95,8 +98,6 @@ export default async function RootLayout(props: {
         >
           <Header></Header>
           {props.children}
-
-          <DemoBadge />
         </NextIntlClientProvider>
       </body>
     </html>
